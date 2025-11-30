@@ -50,6 +50,7 @@ goto lastPartofLoop;
 lastPartofLoop:
 	if (iChar != '\n') goto startofloop1;
 	lLineCount++;
+    goto startofloop1;
 
 finalIf:
 	if (!iInWord) goto endfinalIf;
