@@ -28,7 +28,7 @@ static int iInWord = FALSE;      /* Bad style. */
 int main(void)
 {
    startofloop1:
-	if((iChar = getchar()) != EOF) goto finalIf;
+	if((iChar = getchar()) == EOF) goto finalIf;
 	lCharCount++;
 	if (isspace(iChar)) goto space;
 	if (!iInWord) goto notSpaceNotInWord;
