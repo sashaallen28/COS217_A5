@@ -104,7 +104,7 @@ spaceInWord:
 
 
             // iInWord = FALSE;
-	mov     x0, FALSE
+	mov     w0, FALSE
        	adr     x1, iInWord
         	str     w0, [x1]
 
@@ -113,7 +113,7 @@ spaceInWord:
 
 notSpaceNotInWord:
 	// iInWord = TRUE;
-	mov     x0, TRUE
+	mov     w0, TRUE
        	adr     x1, iInWord
         	str     w0, [x1]
 
