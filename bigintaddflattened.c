@@ -68,21 +68,18 @@ endClear:
     ulCarry = 0;
     lIndex = 0;
 loopAddition:
-    if (!(lIndex < lSumLength))
-        goto endLoopAddition;
+    if (!(lIndex < lSumLength)) goto endLoopAddition;
     ulSum = ulCarry;
     ulCarry = 0;
 
     ulSum += oAddend1->aulDigits[lIndex];
-    if (ulSum >= oAddend1->aulDigits[lIndex])
-        goto noOverflow1; /* Check for overflow. */
+    if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
     ulCarry = 1;
     goto noOverflow1;
 
 noOverflow1:
     ulSum += oAddend2->aulDigits[lIndex];
-    if (ulSum < oAddend2->aulDigits[lIndex])
-        goto noOverflow2; /* Check for overflow. */
+    if (ulSum >= oAddend2->aulDigits[lIndex]) goto noOverflow2; /* Check for overflow. */
     ulCarry = 1;
     goto noOverflow2;
 
@@ -95,10 +92,8 @@ noOverflow2:
 endLoopAddition:
 
     /* Check for a carry out of the last "column" of the addition. */
-    if (ulCarry != 1)
-        goto endCarryOut;
-    if (lSumLength != MAX_DIGITS)
-        goto endMaxDigits;
+    if (ulCarry != 1) goto endCarryOut;
+    if (lSumLength != MAX_DIGITS) goto endMaxDigits;
     return FALSE;
     goto endMaxDigits;
 endMaxDigits:
