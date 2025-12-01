@@ -55,10 +55,11 @@ main:
 
 startofloop1:
 	// if((iChar = getchar()) == EOF) goto finalIf;
+
 	bl      getchar
         	adr     x1, iChar
-        	str    x0, [x1]
-        	cmp     x0, EOF
+        	str    w0, [x1]
+        	cmp     w0, EOF
         	beq     finalIf
 
 	// lCharCount++;
@@ -69,15 +70,16 @@ startofloop1:
 
 
 	// if (isspace(iChar)) goto space;
-	ldr     x0, [sp, iChar]
+	ldr     w0, [sp, iChar]
         	bl      isspace
-        	cmp     x0, 1
+        	cmp     w0, 1
         	beq     space
 
 
 	// if (!iInWord) goto notSpaceNotInWord;
 	adr     x0, iInWord
-            cmp     x0, 0
+            ldr     w0, [x1]
+            cmp     w0, 0
             beq    notSpaceNotInWord
 
 	// goto lastPartofLoop;
