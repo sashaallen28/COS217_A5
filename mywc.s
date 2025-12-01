@@ -57,8 +57,7 @@ startofloop1:
 	// if((iChar = getchar()) == EOF) goto finalIf;
 	bl      getchar
         	adr     x1, iChar
-        	str    w0, [x1]
-        	ldr     x0, [w0]
+        	str    x0, [x1]
         	cmp     x0, EOF
         	beq     finalIf
 
