@@ -70,14 +70,14 @@ startofloop1:
 
 
 	// if (isspace(iChar)) goto space;
-	ldr     x0, [iChar]
+	ldr     x0, [sp, iChar]
         	bl      isspace
         	cmp     x0, 1
         	beq     space
 
 
 	// if (!iInWord) goto notSpaceNotInWord;
-	adr     x0, [iInWord]
+	adr     x0, iInWord
             ldr     x0, [x0]
             cmp     x0, 0
             beq    notSpaceNotInWord
