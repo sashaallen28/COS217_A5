@@ -124,7 +124,7 @@ lastPartofLoop:
 	// if (iChar != '\n') goto startofloop1;
 	adr     x0, iChar
             ldr     x0, [x0]
-            cmp     x0, ‘\n’
+            cmp     x0, [0x0A]
             bne    startofloop1
 
 
