@@ -157,11 +157,11 @@ endfinalIf:
 // printf("%7ld %7ld %7ld\n", lLineCount, lWordCount, lCharCount);
 adr     x0, printfMessageStr
 adr     x1, lLineCount
-ldr     w1, [x1]
+ldr     x1, [x1]
 adr     x2, lWordCount
-ldr     w2, [x2]
+ldr     x2, [x2]
 adr     x3, lCharCount
-ldr     w3, [x3]
+ldr     x3, [x3]
 bl      printf
 
 // Epilog and return 0
