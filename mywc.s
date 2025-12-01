@@ -77,7 +77,6 @@ startofloop1:
 
 	// if (!iInWord) goto notSpaceNotInWord;
 	adr     x0, iInWord
-            ldr     x0, [x0]
             cmp     x0, 0
             beq    notSpaceNotInWord
 
@@ -87,7 +86,6 @@ startofloop1:
 space:
 	// if (iInWord) goto spaceInWord;
 	adr     x0, iInWord
-            ldr     x0, [x0]
             cmp     x0, 0
             bgt    notSpaceNotInWord
 
@@ -122,7 +120,6 @@ b       lastPartofLoop
 lastPartofLoop:
 	// if (iChar != '\n') goto startofloop1;
 	adr     x0, iChar
-            ldr     x0, [x0]
             cmp     x0, [0x0A]
             bne    startofloop1
 
@@ -139,7 +136,6 @@ b       startofloop1
 finalIf:
 	// if (!iInWord) goto endfinalIf;
 	adr     x0, iInWord
-            ldr     x0, [x0]
             cmp     x0, 0
             beq    notSpaceNotInWord
 
