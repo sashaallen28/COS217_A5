@@ -35,7 +35,7 @@ MAX_DIGITS:
         .equ    LLENGTH1,    24
         
         
- BigInt_larger:
+.global BigInt_larger:
  
 			  // Prolog
         sub     sp, sp, LARGER_STACK_BYTECOUNT
@@ -94,7 +94,7 @@ MAX_DIGITS:
         .equ    OADDEND2, 48
         .equ    OADDEND1, 56
 
-BigInt_add:
+.global BigInt_add:
 
 // Prolog
         sub     sp, sp, ADD_STACK_BYTECOUNT
