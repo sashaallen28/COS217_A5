@@ -50,14 +50,14 @@ BigInt_larger:
      
 			  // if (lLength1 < lLength2) goto length1Smaller;
         cmp     x0, x1
-        beq     length1Smaller
+        blt     length1Smaller
         
         // lLarger = lLength1;
         ldr     x0, [sp, LLENGTH1]
         str     x0, [sp, LLARGER]
 				
 			  // goto endLarger;
-			  beq     endLarger
+			  b    endLarger
 			      
 	length1Smaller:
 			  // lLarger = lLength2;
@@ -127,7 +127,8 @@ BigInt_add:
         
         /* Clear oSum's array if necessary. */
         // if (oSum->lLength <= lSumLength) goto endClear;
-        ldr     x1, [sp, OSUM]
+        ldr     x2, [sp, OSUM]
+        ldr     x1, [x2]
         ldr     x0, [sp, LSUMLENGTH]
         cmp     x1, x0
         ble     endClear
