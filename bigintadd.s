@@ -152,8 +152,8 @@ loopAddition:
         ldr     x0, [sp, ULCARRY]
         str     x0, [sp, ULSUM]
         // ulCarry = 0;
-        ldr     x1, [sp, ULCARRY] // x1 is ulCarry
-        str     xzr, [x1]
+        mov     x1, 0
+        str     x1, [sp, ULCARRY]
 			  
 			  // ulSum += oAddend1->aulDigits[lIndex];
 			  ldr     x0, [sp, ULSUM] // x0 is ulSum
