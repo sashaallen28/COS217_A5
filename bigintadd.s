@@ -44,6 +44,7 @@ BigInt_larger:
         str     x30, [sp]
         str     x0, [sp, LLENGTH1]
         str     x1, [sp, LLENGTH2]
+        str x2, [sp, LLARGER]
 
         // long lLarger;
      
@@ -132,6 +133,15 @@ BigInt_add:
         ble     endClear
         
         // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
+        ldr x0, [sp, OSUM]
+        add x0, x0, 8
+        mov x1, 0
+        mov x2, MAX_DIGITS
+        mov x3, 8
+        mul x2, x2, x3
+        bl memset
+
+
         // unsure how to do this part
               
         // goto endClear;
@@ -151,7 +161,7 @@ loopAddition:
         ldr     x0, [sp, LSUMLENGTH]
         ldr     x1, [sp, LINDEX]
         cmp     x1, x0
-        bge     endLoopAddition
+        bhs     endLoopAddition
         // ulSum = ulCarry;
         ldr     x0, [sp, ULCARRY]
         str     x0, [sp, ULSUM]
@@ -166,9 +176,11 @@ loopAddition:
 				add     x2, x2, 8 // offset to reach oAddend1->aulDigits
         ldr     x3, [x2, x1, lsl 3] // x3 is oAddend1->aulDigits[lIndex]
         add     x0, x0, x3 // updates ulSum in x0
-	      // if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
+	// if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
+        str x0, [sp, ULSUM]
+
         cmp x0, x3
-        bge noOverflow1
+        bhs noOverflow1
         // ulCarry = 1;
         mov     x3, 1
         str     x3, [sp, ULCARRY]
@@ -185,7 +197,7 @@ noOverflow1:
         add     x0, x0, x3 // updates ulSum in x0
         // if (ulSum < oAddend2->aulDigits[lIndex]) goto noOverflow2; /* Check for overflow. */
         cmp x0, x3
-        bge noOverflow2
+        bhs noOverflow2
         // ulCarry = 1;
         mov     x4, 1
         str     x4, [sp, ULCARRY]
