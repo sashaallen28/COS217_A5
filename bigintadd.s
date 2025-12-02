@@ -70,7 +70,7 @@ BigInt_larger:
 	      // Epilog and return lLarger
         ldr     x0, [sp, LLARGER]
         ldr     x30, [sp]
-        add     sp, sp, ADD_STACK_BYTECOUNT
+        add     sp, sp, LARGER_STACK_BYTECOUNT
         ret
 
         .size    BigInt_larger, (. -  BigInt_larger)
@@ -115,18 +115,18 @@ BigInt_add:
 			  
 			  /* Determine the larger length. */
 		    // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
-			  ldr     x0, [sp, OADDEND1]
-			  ldr     x1, [sp, OADDEND2]
+	ldr     x0, [sp, OADDEND1]
+  
+	ldr     x1, [sp, OADDEND2]
 			  bl      BigInt_larger
-			  ldr     x1, [sp, LSUMLENGTH]
-        str     x0, [x1]
+	str x0, [sp, LSUMLENGTH]
         // x0 contains lSumLength?
         // x1 contains lSumLength address?
         
         /* Clear oSum's array if necessary. */
         // if (oSum->lLength <= lSumLength) goto endClear;
-        str     x1, [sp, OSUM]
-        str     x0, [sp, LSUMLENGTH]
+        ldr     x1, [sp, OSUM]
+        ldr     x0, [sp, LSUMLENGTH]
         cmp     x1, x0
         ble     endClear
         
@@ -166,7 +166,7 @@ loopAddition:
         ldr     x3, [x2, x1, lsl 3] // x3 is oAddend1->aulDigits[lIndex]
         add     x0, x0, x3 // updates ulSum in x0
 	      // if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
-        cmp x0, x2
+        cmp x0, x3
         bge noOverflow1
         // ulCarry = 1;
         mov     x3, 1
@@ -180,14 +180,14 @@ noOverflow1:
         ldr     x1, [sp, LINDEX] // x1 is lIndex
         ldr     x2, [sp, OADDEND1] // x2 is oAddend1
 				add     x2, x2, 8 // offset to reach oAddend1->aulDigits
-        ldr     x2, [x2, x1, lsl 3] // x2 is oAddend1->aulDigits[lIndex]
-        add     x0, x0, x2 // updates ulSum in x0
+        ldr     x3, [x2, x1, lsl 3] // x2 is oAddend1->aulDigits[lIndex]
+        add     x0, x0, x3 // updates ulSum in x0
         // if (ulSum < oAddend2->aulDigits[lIndex]) goto noOverflow2; /* Check for overflow. */
-        cmp x0, x2
+        cmp x0, x3
         bge noOverflow2
         // ulCarry = 1;
-        mov     x3, 1
-        str     x3, [sp, ULCARRY]
+        mov     x4, 1
+        str     x4, [sp, ULCARRY]
         // goto noOverflow2;
 			  b noOverflow2
 
