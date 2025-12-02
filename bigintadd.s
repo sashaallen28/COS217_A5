@@ -105,6 +105,8 @@ BigInt_add:
         str     x30, [sp]
         str     x0, [sp, OADDEND1]
         str     x1, [sp, OADDEND2]
+        str     x2, [sp, OSUM]
+
         
         // unsigned long ulCarry;
 				// unsigned long ulSum;
@@ -160,7 +162,7 @@ loopAddition:
         ldr     x1, [sp, LINDEX] // x1 is lIndex
         ldr     x2, [sp, OADDEND1] // x2 is oAddend1
 				add     x2, x2, 8 // offset to reach oAddend1->aulDigits
-        str     x3, [x2, x1, lsl 3] // x3 is oAddend1->aulDigits[lIndex]
+        ldr     x3, [x2, x1, lsl 3] // x3 is oAddend1->aulDigits[lIndex]
         add     x0, x0, x3 // updates ulSum in x0
 	      // if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
         cmp x0, x2
