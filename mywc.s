@@ -25,7 +25,7 @@ lWordCount:
 lCharCount:
         .quad   0
 iInWord:
-        .quad   FALSE
+        .word   FALSE
 
 
 //----------------------------------------------------------------------
