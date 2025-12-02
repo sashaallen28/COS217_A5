@@ -25,7 +25,7 @@ lWordCount:
 lCharCount:
         .quad   0
 iInWord:
-        .quad   FALSE
+        .word   FALSE
 
 
 //----------------------------------------------------------------------
@@ -91,7 +91,7 @@ space:
 	// if (iInWord) goto spaceInWord;
 	adr     x0, iInWord
         ldr     w0, [x0]
-            cmp     w0, 0
+            cmp     w0, FALSE
             bne    spaceInWord
 
 	// goto lastPartofLoop;
