@@ -74,8 +74,8 @@ startofloop1:
         ldr     w2, [x0]
         mov     w0, w2
         	bl      isspace
-        	cmp     w0, 1
-        	beq     space
+        	cmp     w0, 0
+        	bne     space
 
 
 	// if (!iInWord) goto notSpaceNotInWord;
@@ -91,8 +91,8 @@ space:
 	// if (iInWord) goto spaceInWord;
 	adr     x0, iInWord
         ldr     w0, [x0]
-            cmp     w0, FALSE
-            bne    spaceInWord
+            cmp     w0, TRUE
+            beq    spaceInWord
 
 	// goto lastPartofLoop;
 	b       lastPartofLoop
