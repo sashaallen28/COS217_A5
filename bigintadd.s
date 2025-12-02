@@ -126,6 +126,7 @@ BigInt_add:
         /* Clear oSum's array if necessary. */
         // if (oSum->lLength <= lSumLength) goto endClear;
         str     x1, [sp, OSUM]
+        str     x0, [sp, LSUMLENGTH]
         cmp     x1, x0
         ble     endClear
         
