@@ -160,7 +160,7 @@ loopAddition:
         add     x0, x0, x2 // updates ulSum in x0
 	      // if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
         cmp x0, x2
-        bge noOverFlow1
+        bge noOverflow1
         // ulCarry = 1;
         mov     x3, 1
         str     x3, [sp, ULCARRY]
@@ -177,7 +177,7 @@ noOverflow1:
         add     x0, x0, x2 // updates ulSum in x0
         // if (ulSum < oAddend2->aulDigits[lIndex]) goto noOverflow2; /* Check for overflow. */
         cmp x0, x2
-        bge noOverFlow2
+        bge noOverflow2
         // ulCarry = 1;
         mov     x3, 1
         str     x3, [sp, ULCARRY]
