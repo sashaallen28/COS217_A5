@@ -71,7 +71,8 @@ startofloop1:
 
 	// if (isspace(iChar)) goto space;
         adr     x0, iChar
-        ldr     w0, [x0]
+        ldr     w2, [x0]
+        mov     w0, w2
         	bl      isspace
         	cmp     w0, 1
         	beq     space
