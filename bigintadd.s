@@ -11,6 +11,9 @@
 //----------------------------------------------------------------------
         .section .data
 
+MAX_DIGITS:
+        .quad   2738622
+
 //----------------------------------------------------------------------
         .section .bss
 	
@@ -59,13 +62,13 @@
         str     x0, [sp, LLARGER]
 			  
 			  // goto endLarger;
-			  goto endLarger;
+			 b endLarger
 			      
 	endLarger:
 	      // Epilog and return lLarger
         ldr     x0, [sp, LLARGER]
         ldr     x30, [sp]
-        add     sp, sp, GCD_STACK_BYTECOUNT
+        add     sp, sp, ADD_STACK_BYTECOUNT
         ret
 
         .size    BigInt_larger, (. -  BigInt_larger)
@@ -78,7 +81,7 @@
         //--------------------------------------------------------------
 
         // Must be a multiple of 16
-        .equ    MAIN_STACK_BYTECOUNT, 64
+        .equ    ADD_STACK_BYTECOUNT, 64
 
         // Local variables stack offsets:
         .equ    ULCARRY,  8
@@ -230,7 +233,7 @@ endLoopAddition:
 			  // oSum->lLength = lSumLength;
 			  ldr     x0, [sp, OSUM] // x0 is oSum
 			  ldr     x1, [sp, LSUMLENGTH] // x1 is lSumLength
-			  str     x1, x0
+			  str     x1, [x0]
 			  
 			  // return TRUE;
 			  mov     w0, 1
