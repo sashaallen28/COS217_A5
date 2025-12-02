@@ -90,7 +90,7 @@ space:
 	// if (iInWord) goto spaceInWord;
 	adr     x0, iInWord
         ldr     w0, [x0]
-            cmp     x0, 0
+            cmp     w0, 0
             bgt    spaceInWord
 
 	// goto lastPartofLoop;
@@ -125,7 +125,7 @@ lastPartofLoop:
 	// if (iChar != '\n') goto startofloop1;
 	adr     x0, iChar
         ldr     w0, [x0]
-            cmp     w0, [0x0A]
+            cmp     w0, #0x0A
             bne    startofloop1
 
 
@@ -142,7 +142,7 @@ finalIf:
 	// if (!iInWord) goto endfinalIf;
 	adr     x0, iInWord
         ldr     w0, [x0]
-            cmp     x0, 0
+            cmp     w0, 0
             beq    endfinalIf
 
 // lWordCount++;
