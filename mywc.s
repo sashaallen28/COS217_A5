@@ -91,7 +91,7 @@ space:
 	adr     x0, iInWord
         ldr     w0, [x0]
             cmp     x0, 0
-            bgt    notSpaceNotInWord
+            bgt    spaceInWord
 
 	// goto lastPartofLoop;
 	b       lastPartofLoop
