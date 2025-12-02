@@ -116,8 +116,9 @@ BigInt_add:
 			  /* Determine the larger length. */
 		    // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
 	ldr     x0, [sp, OADDEND1]
-  
+        ldr     x0, [x0]
 	ldr     x1, [sp, OADDEND2]
+        ldr     x1, [x1]
 			  bl      BigInt_larger
 	str x0, [sp, LSUMLENGTH]
         // x0 contains lSumLength?
@@ -150,7 +151,7 @@ loopAddition:
         ldr     x0, [sp, LSUMLENGTH]
         ldr     x1, [sp, LINDEX]
         cmp     x1, x0
-        bge     endClear
+        bge     endLoopAddition
         // ulSum = ulCarry;
         ldr     x0, [sp, ULCARRY]
         str     x0, [sp, ULSUM]
@@ -178,7 +179,7 @@ noOverflow1:
         // ulSum += oAddend2->aulDigits[lIndex];
         ldr     x0, [sp, ULSUM] // x0 is ulSum
         ldr     x1, [sp, LINDEX] // x1 is lIndex
-        ldr     x2, [sp, OADDEND1] // x2 is oAddend1
+        ldr     x2, [sp, OADDEND2] // x2 is oAddend1
 				add     x2, x2, 8 // offset to reach oAddend1->aulDigits
         ldr     x3, [x2, x1, lsl 3] // x2 is oAddend1->aulDigits[lIndex]
         add     x0, x0, x3 // updates ulSum in x0
