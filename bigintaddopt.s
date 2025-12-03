@@ -128,13 +128,13 @@ BigInt_add:
 			  // long lSumLength;
 			  
 			  /* Determine the larger length. */
- // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
-	    ldr     x0, [sp, OADDEND1]
-            ldr     x0, [x0]
-	    ldr     x1, [sp, OADDEND2]
-            ldr     x1, [x1]
+        // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
+        
+
+        mov x0, OADDEND1
+        mov x0, OADDEND2
 	    bl      BigInt_larger
-	    str x0, [sp, LSUMLENGTH]
+	    mov LSUMLENGTH, x0
         // x0 contains lSumLength?
         // x1 contains lSumLength address?
         
@@ -144,7 +144,7 @@ BigInt_add:
         ble     endClear
         
         // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
-        ldr x0, [sp, OSUM]
+        mov x0, OSUM
         add x0, x0, 8
         mov w1, 0
         mov  x2, MAX_DIGITS
@@ -172,9 +172,9 @@ loopAddition:
         mov     ULCARRY, 0
 			  
 			  // ulSum += oAddend1->aulDigits[lIndex];
-	ldr     x0, [sp, ULSUM] // x0 is ulSum
-        ldr     x1, [sp, LINDEX] // x1 is lIndex
-        ldr     x2, [sp, OADDEND1] // x2 is oAddend1
+	m     x0, [sp, ULSUM] // x0 is ulSum
+        mov     x1, [sp, LINDEX] // x1 is lIndex
+        mov     x2, [sp, OADDEND1] // x2 is oAddend1
 				add     x2, x2, 8 // offset to reach oAddend1->aulDigits
         ldr     x3, [x2, x1, lsl 3] // x3 is oAddend1->aulDigits[lIndex]
         ldr     x0, [sp, ULSUM]
