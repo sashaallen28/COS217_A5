@@ -132,7 +132,7 @@ BigInt_add:
         
 
         mov x0, OADDEND1
-        mov x0, OADDEND2
+        mov x1, OADDEND2
 	    bl      BigInt_larger
 	    mov LSUMLENGTH, x0
         // x0 contains lSumLength?
@@ -172,23 +172,31 @@ loopAddition:
         mov     ULCARRY, 0
 			  
 			  // ulSum += oAddend1->aulDigits[lIndex];
-	m     x0, [sp, ULSUM] // x0 is ulSum
-        mov     x1, [sp, LINDEX] // x1 is lIndex
-        mov     x2, [sp, OADDEND1] // x2 is oAddend1
+	// mov     x0, [sp, ULSUM] // x0 is ulSum
+        mov     x0, ULSUM
+        mov     x1, LINDEX
+        // mov     x1, [sp, LINDEX] // x1 is lIndex
+        // mov     x2, [sp, OADDEND1] // x2 is oAddend1
+        mov     x2, OADDEND1
 				add     x2, x2, 8 // offset to reach oAddend1->aulDigits
         ldr     x3, [x2, x1, lsl 3] // x3 is oAddend1->aulDigits[lIndex]
-        ldr     x0, [sp, ULSUM]
+        // ldr     x0, [sp, ULSUM]
+        mov     x0, ULSUM
 
         add     x0, x0, x3 // updates ulSum in x0
-        str x0, [sp, ULSUM]
+        // str x0, [sp, ULSUM]
+        mov ULSUM, x0
 
 	// if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
-        ldr x0, [sp, ULSUM]
+        // ldr x0, [sp, ULSUM]
+        mov x0, ULSUM
 
         // added code
-        ldr     x1, [sp, LINDEX] // x1 is lIndex
-        ldr     x2, [sp, OADDEND1] // x2 is oAddend1
-		add     x2, x2, 8 // offset to reach oAddend1->aulDigits
+        // ldr     x1, [sp, LINDEX] // x1 is lIndex
+        mov x1, LINDEX
+        // ldr     x2, [sp, OADDEND1] // x2 is oAddend1
+        mov x2, OADDEND1
+	add     x2, x2, 8 // offset to reach oAddend1->aulDigits
         ldr     x3, [x2, x1, lsl 3] // x3 is oAddend1->aulDigits[lIndex]
 
         cmp x0, x3
@@ -201,42 +209,56 @@ loopAddition:
         
 noOverflow1:
         // ulSum += oAddend2->aulDigits[lIndex];
-        ldr     x0, [sp, ULSUM] // x0 is ulSum
-        ldr     x1, [sp, LINDEX] // x1 is lIndex
-        ldr     x2, [sp, OADDEND2] // x2 is oAddend1
-		add     x2, x2, 8 // offset to reach oAddend1->aulDigits
+        //ldr     x0, [sp, ULSUM] // x0 is ulSum
+        mov     x0, ULSUM
+        // ldr     x1, [sp, LINDEX] // x1 is lIndex
+        mov     x1, LINDEX
+        // ldr     x2, [sp, OADDEND2] // x2 is oAddend1
+        mov     x2, OADDEND2
+	add     x2, x2, 8 // offset to reach oAddend1->aulDigits
         ldr     x3, [x2, x1, lsl 3] // x2 is oAddend1->aulDigits[lIndex]
         add     x0, x0, x3 // updates ulSum in x0
 
         // if (ulSum < oAddend2->aulDigits[lIndex]) goto noOverflow2; /* Check for overflow. */
-        str x0, [sp, ULSUM]
-        ldr x0, [sp, ULSUM]
+        // str x0, [sp, ULSUM]
+        mov ULSUM, x0
+        // ldr x0, [sp, ULSUM]
+        mov x0, ULSUM
 
          // added code
-        ldr     x1, [sp, LINDEX] // x1 is lIndex
-        ldr     x2, [sp, OADDEND2] // x2 is oAddend1
-		add     x2, x2, 8 // offset to reach oAddend1->aulDigits
+        // ldr     x1, [sp, LINDEX] // x1 is lIndex
+        mov     x1, LINDEX
+        // ldr     x2, [sp, OADDEND2] // x2 is oAddend1
+        mov     x2, OADDEND2
+	add     x2, x2, 8 // offset to reach oAddend1->aulDigits
         ldr     x3, [x2, x1, lsl 3] // x2 is oAddend1->aulDigits[lIndex]
 
         cmp x0, x3
         bhs noOverflow2 //bhs?
         // ulCarry = 1;
         mov     x4, 1
-        str     x4, [sp, ULCARRY]
+        // str     x4, [sp, ULCARRY]
+        mov     ULCARRY, x4
         // goto noOverflow2;
 			  b noOverflow2
 
 noOverflow2:
 				// oSum->aulDigits[lIndex] = ulSum;
-				ldr     x0, [sp, OSUM] // x0 is oSum
-				ldr     x1, [sp, LINDEX] // x1 is lIndex
-				add     x0, x0, 8 // offset to reach oSum->aulDigits
-				ldr     x2, [sp, ULSUM] // x2 is ulSum
+
+        // ldr     x0, [sp, OSUM] // x0 is oSum
+        mov     x0, OSUM
+        // ldr     x1, [sp, LINDEX] // x1 is lIndex
+        mov     x1, LINDEX
+        add     x0, x0, 8 // offset to reach oSum->aulDigits
+        // ldr     x2, [sp, ULSUM] // x2 is ulSum
+        mov     x2, ULSUM
         str     x2, [x0, x1, lsl 3] // x2 is oSum->aulDigits[lIndex]
 				// lIndex++;
-				ldr     x0, [sp, LINDEX]
+	// ldr     x0, [sp, LINDEX]
+        mov     x0, LINDEX
         add     x0, x0, 1
-        str     x0, [sp, LINDEX]
+        // str     x0, [sp, LINDEX]
+        mov LINDEX, x0
         // goto loopAddition;
         b loopAddition
 
@@ -264,23 +286,29 @@ endLoopAddition:
         // goto endMaxDigits;
  endMaxDigits:
         // oSum->aulDigits[lSumLength] = 1;
-        ldr     x0, [sp, OSUM] // x0 is oSum
-	ldr     x1, [sp, LSUMLENGTH] // x1 is lSumLength
-				add     x0, x0, 8 // offset to reach oSum->aulDigits
+        // ldr     x0, [sp, OSUM] // x0 is oSum
+        mov     x0, OSUM
+        // ldr     x1, [sp, LSUMLENGTH] // x1 is lSumLength
+        mov     x1, LSUMLENGTH
+        add     x0, x0, 8 // offset to reach oSum->aulDigits
 				mov     x2, 1
         str     x2, [x0, x1, lsl 3] // x2 is oSum->aulDigits[lSumLength]
         // lSumLength++;
-        ldr     x0, [sp, LSUMLENGTH]
+        // ldr     x0, [sp, LSUMLENGTH]
+        mov     x0, LSUMLENGTH
         add     x0, x0, 1
-        str     x0, [sp, LSUMLENGTH]
+        // str     x0, [sp, LSUMLENGTH]
+        mov     LSUMLENGTH, x0
         // goto endCarryOut;
         b endCarryOut
  endCarryOut:
 				/* Set the length of the sum. */
 			  // oSum->lLength = lSumLength;
-	ldr     x0, [sp, OSUM] // x0 is oSum
-			  ldr     x1, [sp, LSUMLENGTH] // x1 is lSumLength
-			  str     x1, [x0]
+	// ldr     x0, [sp, OSUM] // x0 is oSum
+        mov     x0, OSUM
+        // ldr     x1, [sp, LSUMLENGTH] // x1 is lSumLength
+        mov     x1, LSUMLENGTH
+        str     x1, [x0]
 			  
 			  // return TRUE;
 			  mov     w0, 1
