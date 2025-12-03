@@ -117,12 +117,12 @@ BigInt_add:
 			  
 			  /* Determine the larger length. */
 		    // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
-	ldr     x0, [sp, OADDEND1]
-        ldr     x0, [x0]
-	ldr     x1, [sp, OADDEND2]
-        ldr     x1, [x1]
-			  bl      BigInt_larger
-	str x0, [sp, LSUMLENGTH]
+	        ldr     x0, [sp, OADDEND1]
+            ldr     x0, [x0]
+	        ldr     x1, [sp, OADDEND2]
+            ldr     x1, [x1]
+			bl      BigInt_larger
+	        str x0, [sp, LSUMLENGTH]
         // x0 contains lSumLength?
         // x1 contains lSumLength address?
         
@@ -142,8 +142,6 @@ BigInt_add:
         lsl x2, x2, 3 
         bl memset
 
-
-        // unsure how to do this part
               
         // goto endClear;
         b endClear
@@ -152,7 +150,7 @@ endClear:
         /* Perform the addition. */
 			  // ulCarry = 0;
 			  // lIndex = 0;
-			  mov     x2, 0
+		mov     x2, 0
         str     x2, [sp, ULCARRY]
         mov     x3, 0
         str     x3, [sp, LINDEX]
@@ -179,16 +177,16 @@ loopAddition:
         ldr     x0, [sp, ULSUM]
 
         add     x0, x0, x3 // updates ulSum in x0
+        str x0, [sp, ULSUM]
 
 	// if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
-        str x0, [sp, ULSUM]
         ldr x0, [sp, ULSUM]
 
         // added code
-        ldr     x2, [sp, OADDEND1]    // reload pointer?
-        add     x2, x2, 8
-
-        ldr     x3, [x2, x1, lsl 3]
+        ldr     x1, [sp, LINDEX] // x1 is lIndex
+        ldr     x2, [sp, OADDEND1] // x2 is oAddend1
+		add     x2, x2, 8 // offset to reach oAddend1->aulDigits
+        ldr     x3, [x2, x1, lsl 3] // x3 is oAddend1->aulDigits[lIndex]
 
         cmp x0, x3
         bhs noOverflow1
@@ -203,20 +201,22 @@ noOverflow1:
         ldr     x0, [sp, ULSUM] // x0 is ulSum
         ldr     x1, [sp, LINDEX] // x1 is lIndex
         ldr     x2, [sp, OADDEND2] // x2 is oAddend1
-				add     x2, x2, 8 // offset to reach oAddend1->aulDigits
+		add     x2, x2, 8 // offset to reach oAddend1->aulDigits
         ldr     x3, [x2, x1, lsl 3] // x2 is oAddend1->aulDigits[lIndex]
         add     x0, x0, x3 // updates ulSum in x0
+
         // if (ulSum < oAddend2->aulDigits[lIndex]) goto noOverflow2; /* Check for overflow. */
         str x0, [sp, ULSUM]
         ldr x0, [sp, ULSUM]
 
          // added code
-        ldr     x2, [sp, OADDEND2]    // reload pointer?
-        add     x2, x2, 8
-        
-        ldr     x3, [x2, x1, lsl 3]
+        ldr     x1, [sp, LINDEX] // x1 is lIndex
+        ldr     x2, [sp, OADDEND2] // x2 is oAddend1
+		add     x2, x2, 8 // offset to reach oAddend1->aulDigits
+        ldr     x3, [x2, x1, lsl 3] // x2 is oAddend1->aulDigits[lIndex]
+
         cmp x0, x3
-        bhs noOverflow2
+        blo noOverflow2 //bhs?
         // ulCarry = 1;
         mov     x4, 1
         str     x4, [sp, ULCARRY]
@@ -282,21 +282,3 @@ endLoopAddition:
 
         .size   BigInt_add, (. - BigInt_add)	
 			  
-						  
-				
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
