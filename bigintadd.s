@@ -138,7 +138,7 @@ BigInt_add:
         ldr x0, [sp, OSUM]
         add x0, x0, 8
         mov w1, 0
-        ldr  x2, MAX_DIGITS
+        mov  x2, MAX_DIGITS
         lsl x2, x2, 3 
         bl memset
 
@@ -270,7 +270,8 @@ endLoopAddition:
  endCarryOut:
 				/* Set the length of the sum. */
 			  // oSum->lLength = lSumLength;
-			  ldr     x0, [sp, OSUM] // x0 is oSum
+	ldr     x0, [sp, OSUM] // x0 is oSum
+        str     x0, [sp, OSUM]
 			  ldr     x1, [sp, LSUMLENGTH] // x1 is lSumLength
 			  str     x1, [x0]
 			  
