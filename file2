@@ -1,21 +1,21 @@
 ------------------------------------------------
 Fibonacci number 10:
-0000000000000001
+0000000000000037
 ------------------------------------------------
 Boundary test 1: 0000000000000000
 Boundary test 2a: 0000000000000000
-Boundary test 2b: 0000000100000000
+Boundary test 2b: 0000000200000000
 Boundary test 3a: fffffffffffffffe
-Boundary test 3b: 0000000000000000
-Boundary test 4a: fffffffffffffffe
-Boundary test 4b: 0000000000000001
+Boundary test 3b: fffffffffffffffe
+Boundary test 4a: ffffffffffffffff
+Boundary test 4b: ffffffffffffffff
 Boundary test 5a: ffffffffffffffff
-Boundary test 5b: 0000000000000000
-Boundary test 6a: 0000000000000001ffffffffffffffff
-Boundary test 6b: 00000000000000010000000000000001
-Boundary test 7a: 000000000000000100000000000000000000000000000001
-Boundary test 7b: 00000000000000010000000000000001ffffffffffffffff
+Boundary test 5b: ffffffffffffffff
+Boundary test 6a: 00000000000000010000000000000000
+Boundary test 6b: 00000000000000010000000000000000
+Boundary test 7a: 000000000000000100000000000000000000000000000000
+Boundary test 7b: 000000000000000100000000000000000000000000000000
 Boundary test 8a: ffffffffffffffff...ffffffffffffffff
-Boundary test 8b: 0000000000000000...0000000000000000
-Boundary test 9a: 0000000000000001...ffffffffffffffff
+Boundary test 8b: ffffffffffffffff...ffffffffffffffff
+Boundary test 9a: 0000000000000001...0000000000000000
 Boundary test 9b: 

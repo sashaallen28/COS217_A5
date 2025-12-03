@@ -12,7 +12,7 @@
         .section .data
 
 MAX_DIGITS:
-        .quad   2738622
+        .quad   32768
 
 //----------------------------------------------------------------------
         .section .bss
@@ -83,23 +83,24 @@ BigInt_larger:
            overflow occurred, and 1 (TRUE) otherwise. */
         //--------------------------------------------------------------
 
-        // Must be a multiple of 16
+  
+        .global BigInt_add
+
+BigInt_add:
+
+                // Must be a multiple of 16                                                                                                                                                                             
         .equ    ADD_STACK_BYTECOUNT, 64
 
-        // Local variables stack offsets:
+	// Local variables stack offsets:                                                                                                                                                                       
         .equ    ULCARRY,  8
         .equ    ULSUM,    16
         .equ    LINDEX,   24
         .equ    LSUMLENGTH, 32
-        
-        // Parameter stack offsets:
+
+        // Parameter stack offsets:                                                                                                                                                                             
         .equ    OSUM,     40
         .equ    OADDEND2, 48
         .equ    OADDEND1, 56
-
-        .global BigInt_add
-
-BigInt_add:
 
 // Prolog
         sub     sp, sp, ADD_STACK_BYTECOUNT
@@ -136,10 +137,9 @@ BigInt_add:
         // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
         ldr x0, [sp, OSUM]
         add x0, x0, 8
-        mov x1, 0
+        mov w1, 0
         mov x2, MAX_DIGITS
-        mov x3, 8
-        mul x2, x2, x3
+        lsl x2, x2, 8 
         bl memset
 
 
@@ -162,7 +162,7 @@ loopAddition:
         ldr     x0, [sp, LSUMLENGTH]
         ldr     x1, [sp, LINDEX]
         cmp     x1, x0
-        bhs     endLoopAddition
+        bge     endLoopAddition
         // ulSum = ulCarry;
         ldr     x0, [sp, ULCARRY]
         str     x0, [sp, ULSUM]
@@ -179,6 +179,8 @@ loopAddition:
         add     x0, x0, x3 // updates ulSum in x0
 	// if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
         str x0, [sp, ULSUM]
+        ldr x0, [sp, ULSUM]
+        ldr     x3, [x2, x1, lsl 3]
 
         cmp x0, x3
         bhs noOverflow1
@@ -197,6 +199,10 @@ noOverflow1:
         ldr     x3, [x2, x1, lsl 3] // x2 is oAddend1->aulDigits[lIndex]
         add     x0, x0, x3 // updates ulSum in x0
         // if (ulSum < oAddend2->aulDigits[lIndex]) goto noOverflow2; /* Check for overflow. */
+        str x0, [sp, ULSUM]
+        ldr x0, [sp, ULSUM]
+        
+        ldr     x3, [x2, x1, lsl 3]
         cmp x0, x3
         bhs noOverflow2
         // ulCarry = 1;
@@ -266,3 +272,19 @@ endLoopAddition:
 			  
 						  
 				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
