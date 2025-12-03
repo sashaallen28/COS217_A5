@@ -4,15 +4,13 @@
 /*--------------------------------------------------------------------*/
         .equ    FALSE, 0
         .equ    TRUE, 1
-
+        .equ    MAX_DIGITS, 32768
 //----------------------------------------------------------------------
         .section .rodata
 
 //----------------------------------------------------------------------
         .section .data
 
-MAX_DIGITS:
-        .quad   32768
 
 //----------------------------------------------------------------------
         .section .bss
@@ -244,8 +242,7 @@ endLoopAddition:
         bne     endCarryOut
         // if (lSumLength != MAX_DIGITS) goto endMaxDigits;
         ldr     x0, [sp, LSUMLENGTH]
-        mov     x1, MAX_DIGITS
-        cmp     x0, x1
+        cmp     x0, MAX_DIGITS
         bne     endMaxDigits
         // return FALSE;
         mov     w0, FALSE
