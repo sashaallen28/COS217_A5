@@ -211,7 +211,7 @@ noOverflow1:
         ldr x0, [sp, ULSUM]
 
          // added code
-        ldr     x2, [sp, OADDEND1]    // reload pointer?
+        ldr     x2, [sp, OADDEND2]    // reload pointer?
         add     x2, x2, 8
         
         ldr     x3, [x2, x1, lsl 3]
