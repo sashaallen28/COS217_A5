@@ -43,8 +43,8 @@ BigInt_larger:
 		// Prolog
         sub     sp, sp, LARGER_STACK_BYTECOUNT
         str     x30, [sp]
-        str     x20, [sp, LLENGTH1]
-        str     x21, [sp, LLENGTH2]
+//        str     x20, [sp, LLENGTH1]
+  //      str     x21, [sp, LLENGTH2]
 
         // long lLarger;
      
@@ -53,7 +53,7 @@ BigInt_larger:
         blt     length1Smaller
         
         // lLarger = lLength1;
-        ldr     x0, [sp, LLENGTH1]
+        ldr     x0, [x20]
         str     x0, [x19]
 				
 			  // goto endLarger;
@@ -68,7 +68,7 @@ BigInt_larger:
 			      
 	endLarger:
 	      // Epilog and return lLarger
-        ldr     x0, [sp, LLARGER]
+        ldr     x0, [x19]
         ldr     x30, [sp]
         add     sp, sp, LARGER_STACK_BYTECOUNT
         ret
