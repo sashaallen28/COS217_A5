@@ -17,7 +17,9 @@ information given in the "Policies" web page (also available on armlab
 in the file ~cos217/AuthorizedSourcesList ) to this section of the
 readme file, and edit it as appropriate.
 
-
+Lectures
+Precepts
+OH
 
 ------------------------------------------------------------------------
 Student 2: What authorized sources of information did you use to
@@ -26,7 +28,9 @@ information given in the "Policies" web page (also available on armlab
 in the file ~cos217/AuthorizedSourcesList ) to this section of the
 readme file, and edit it as appropriate.
 
-
+Lectures
+Precepts
+OH
 
 ------------------------------------------------------------------------
 Student 1: What unauthorized sources of information did you use to
@@ -40,7 +44,7 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 Student 2: What unauthorized sources of information did you use to
@@ -54,7 +58,7 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 Student 1: In fulfillment of the requirement from section 2.4.3 of the
@@ -75,14 +79,14 @@ This paper represents my own work in accordance with University
 regulations.
 
 
-
+Tobias Seabold
 ------------------------------------------------------------------------
 In fulfillment of the requirement from section 2.4.6 of the Academic
 Regulations in Princeton's Rights, Rules, Responsibilities guide,
 and the COS 217 Generative AI policy, disclose and describe how you
 used AI in completing this assignment:
 
-
+n/a
 
 ------------------------------------------------------------------------
 Student 1: What is your assessment of the assignment? Was it helpful?
@@ -94,7 +98,7 @@ Was it fun?
 Student 2: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
-
+I did not enjoy it.
 
 ------------------------------------------------------------------------
 (optional) What information can you provide about your submission that
@@ -112,11 +116,11 @@ What is your mywc program test plan?
 What are the CPU times consumed by the programs from Parts 2a, 2b, 2d,
 2e, and 2f to compute fib(500000) on armlab? Fill in the blanks.
 
-Part 2a:  _____ seconds
+Part 2a:  13.193010 seconds
 
-Part 2b:  _____ seconds
+Part 2b:  5.407842 seconds
 
-Part 2d:  _____ seconds
+Part 2d:  12.998370 seconds
 
 Part 2e:  _____ seconds
 
