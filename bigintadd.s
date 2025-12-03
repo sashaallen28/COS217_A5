@@ -101,7 +101,7 @@ BigInt_add:
         .equ    OSUM,     40
         .equ    OADDEND2, 48
         .equ    OADDEND1, 56
-
+        .equ LLENGTH, 0
 // Prolog
         sub     sp, sp, ADD_STACK_BYTECOUNT
         str     x30, [sp]
@@ -138,8 +138,8 @@ BigInt_add:
         ldr x0, [sp, OSUM]
         add x0, x0, 8
         mov w1, 0
-        mov x2, MAX_DIGITS
-        lsl x2, x2, 8 
+        ldr  x2, MAX_DIGITS
+        lsl x2, x2, 3 
         bl memset
 
 
@@ -176,6 +176,8 @@ loopAddition:
         ldr     x2, [sp, OADDEND1] // x2 is oAddend1
 				add     x2, x2, 8 // offset to reach oAddend1->aulDigits
         ldr     x3, [x2, x1, lsl 3] // x3 is oAddend1->aulDigits[lIndex]
+        ldr     x0, [sp, ULSUM]
+
         add     x0, x0, x3 // updates ulSum in x0
 	// if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
         str x0, [sp, ULSUM]
