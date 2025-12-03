@@ -96,22 +96,30 @@ BigInt_add:
         .equ    ADD_STACK_BYTECOUNT, 64
 
 	// Local variables stack offsets:                                                                                                                                                                       
-        .equ    ULCARRY,  8
-        .equ    ULSUM,    16
-        .equ    LINDEX,   24
-        .equ    LSUMLENGTH, 32
+        ULCARRY .req x19
+        ULSUM .req x20
+        LINDEX .req x21
+        LSUMLENGTH .req x22
 
         // Parameter stack offsets:                                                                                                                                                                             
-        .equ    OSUM,     40
-        .equ    OADDEND2, 48
-        .equ    OADDEND1, 56
-        .equ LLENGTH, 0
+        OSUM .req x23
+        OADDEND2 .req x24
+        OADDEND1 .req x25
+        LLENGTH  .req x26
 // Prolog
         sub     sp, sp, ADD_STACK_BYTECOUNT
         str     x30, [sp]
-        str     x0, [sp, OADDEND1]
-        str     x1, [sp, OADDEND2]
-        str     x2, [sp, OSUM]
+        str     x19, [sp, 8]
+        str     x20, [sp, 16]
+        str     x21, [sp, 24]
+        str     x22, [sp, 32]
+        str     x23, [sp, 40]
+        str     x24, [sp, 48]
+        str     x25, [sp, 56]
+        str     x26, [sp, 64]
+        mov    OADDEND1, x0
+        mov    OADDEND2, x1
+        mov    OSUM, x2
 
         
         // unsigned long ulCarry;
@@ -120,22 +128,19 @@ BigInt_add:
 			  // long lSumLength;
 			  
 			  /* Determine the larger length. */
-		    // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
-	        ldr     x0, [sp, OADDEND1]
+ // lSumLength = BigInt_larger(oAddend1->lLength, oAddend2->lLength);
+	    ldr     x0, [sp, OADDEND1]
             ldr     x0, [x0]
-	        ldr     x1, [sp, OADDEND2]
+	    ldr     x1, [sp, OADDEND2]
             ldr     x1, [x1]
-			bl      BigInt_larger
-	        str x0, [sp, LSUMLENGTH]
+	    bl      BigInt_larger
+	    str x0, [sp, LSUMLENGTH]
         // x0 contains lSumLength?
         // x1 contains lSumLength address?
         
         /* Clear oSum's array if necessary. */
         // if (oSum->lLength <= lSumLength) goto endClear;
-        ldr     x2, [sp, OSUM]
-        ldr     x1, [x2]
-        ldr     x0, [sp, LSUMLENGTH]
-        cmp     x1, x0
+        cmp     OSUM, LSUMLENGTH
         ble     endClear
         
         // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long));
@@ -154,26 +159,20 @@ endClear:
         /* Perform the addition. */
 			  // ulCarry = 0;
 			  // lIndex = 0;
-		mov     x2, 0
-        str     x2, [sp, ULCARRY]
-        mov     x3, 0
-        str     x3, [sp, LINDEX]
+        mov     ULCARRY, 0
+        mov     LINDEX, 0
 			  
 loopAddition:
         // if (!(lIndex < lSumLength)) goto endLoopAddition;
-        ldr     x0, [sp, LSUMLENGTH]
-        ldr     x1, [sp, LINDEX]
-        cmp     x1, x0
+        cmp     LINDEX, LSUMLENGTH
         bge     endLoopAddition
         // ulSum = ulCarry;
-        ldr     x0, [sp, ULCARRY]
-        str     x0, [sp, ULSUM]
+        mov    ULSUM, ULCARRY
         // ulCarry = 0;
-        mov     x1, 0
-        str     x1, [sp, ULCARRY]
+        mov     ULCARRY, 0
 			  
 			  // ulSum += oAddend1->aulDigits[lIndex];
-			  ldr     x0, [sp, ULSUM] // x0 is ulSum
+	ldr     x0, [sp, ULSUM] // x0 is ulSum
         ldr     x1, [sp, LINDEX] // x1 is lIndex
         ldr     x2, [sp, OADDEND1] // x2 is oAddend1
 				add     x2, x2, 8 // offset to reach oAddend1->aulDigits
@@ -195,8 +194,8 @@ loopAddition:
         cmp x0, x3
         bhs noOverflow1
         // ulCarry = 1;
-        mov     x3, 1
-        str     x3, [sp, ULCARRY]
+        mov     ULCARRY, 1
+
         // goto noOverflow1;
         b noOverflow1
         
@@ -242,25 +241,31 @@ noOverflow2:
         b loopAddition
 
 endLoopAddition:
-				/* Check for a carry out of the last "column" of the addition. */
-			  // if (ulCarry != 1) goto endCarryOut;
-			  ldr     x0, [sp, ULCARRY] // x0 is ulCarry
-        cmp     x0, 1
+/* Check for a carry out of the last "column" of the addition. */
+        // if (ulCarry != 1) goto endCarryOut
+        cmp     ULCARRY, 1
         bne     endCarryOut
         // if (lSumLength != MAX_DIGITS) goto endMaxDigits;
-        ldr     x0, [sp, LSUMLENGTH]
-        cmp     x0, MAX_DIGITS
+        cmp     LSUMLENGTH, MAX_DIGITS
         bne     endMaxDigits
         // return FALSE;
         mov     w0, FALSE
         ldr     x30, [sp]
+        ldr     x19, [sp, 8]
+        ldr     x20, [sp, 16]
+        ldr     x21, [sp, 24]
+        ldr     x22, [sp, 32]
+        ldr     x23, [sp, 40]
+        ldr     x24, [sp, 48]
+        ldr     x25, [sp, 56]
+        ldr     x26, [sp, 64]
         add     sp, sp, ADD_STACK_BYTECOUNT
         ret
         // goto endMaxDigits;
  endMaxDigits:
         // oSum->aulDigits[lSumLength] = 1;
         ldr     x0, [sp, OSUM] // x0 is oSum
-				ldr     x1, [sp, LSUMLENGTH] // x1 is lSumLength
+	ldr     x1, [sp, LSUMLENGTH] // x1 is lSumLength
 				add     x0, x0, 8 // offset to reach oSum->aulDigits
 				mov     x2, 1
         str     x2, [x0, x1, lsl 3] // x2 is oSum->aulDigits[lSumLength]
@@ -279,7 +284,15 @@ endLoopAddition:
 			  
 			  // return TRUE;
 			  mov     w0, 1
-			  ldr     x30, [sp]
+	ldr     x30, [sp]
+        ldr     x19, [sp, 8]
+        ldr     x20, [sp, 16]
+        ldr     x21, [sp, 24]
+        ldr     x22, [sp, 32]
+        ldr     x23, [sp, 40]
+        ldr     x24, [sp, 48]
+        ldr     x25, [sp, 56]
+        ldr     x26, [sp, 64]
         add     sp, sp, ADD_STACK_BYTECOUNT
         ret
 
