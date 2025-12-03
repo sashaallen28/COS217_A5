@@ -179,9 +179,15 @@ loopAddition:
         ldr     x0, [sp, ULSUM]
 
         add     x0, x0, x3 // updates ulSum in x0
+
 	// if (ulSum >= oAddend1->aulDigits[lIndex]) goto noOverflow1; /* Check for overflow. */
         str x0, [sp, ULSUM]
         ldr x0, [sp, ULSUM]
+
+        // added code
+        ldr     x2, [sp, OADDEND1]    // reload pointer?
+        add     x2, x2, 8
+
         ldr     x3, [x2, x1, lsl 3]
 
         cmp x0, x3
@@ -203,6 +209,10 @@ noOverflow1:
         // if (ulSum < oAddend2->aulDigits[lIndex]) goto noOverflow2; /* Check for overflow. */
         str x0, [sp, ULSUM]
         ldr x0, [sp, ULSUM]
+
+         // added code
+        ldr     x2, [sp, OADDEND1]    // reload pointer?
+        add     x2, x2, 8
         
         ldr     x3, [x2, x1, lsl 3]
         cmp x0, x3
