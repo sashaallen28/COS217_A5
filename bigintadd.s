@@ -44,7 +44,6 @@ BigInt_larger:
         str     x30, [sp]
         str     x0, [sp, LLENGTH1]
         str     x1, [sp, LLENGTH2]
-        str x2, [sp, LLARGER]
 
         // long lLarger;
      
@@ -216,7 +215,7 @@ noOverflow1:
         ldr     x3, [x2, x1, lsl 3] // x2 is oAddend1->aulDigits[lIndex]
 
         cmp x0, x3
-        blo noOverflow2 //bhs?
+        bhs noOverflow2 //bhs?
         // ulCarry = 1;
         mov     x4, 1
         str     x4, [sp, ULCARRY]
@@ -271,7 +270,6 @@ endLoopAddition:
 				/* Set the length of the sum. */
 			  // oSum->lLength = lSumLength;
 	ldr     x0, [sp, OSUM] // x0 is oSum
-        str     x0, [sp, OSUM]
 			  ldr     x1, [sp, LSUMLENGTH] // x1 is lSumLength
 			  str     x1, [x0]
 			  
