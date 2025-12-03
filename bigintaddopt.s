@@ -26,16 +26,15 @@
         .equ    LARGER_STACK_BYTECOUNT, 32
         
         // Local variable stack offsets:
-        .equ    LLARGER, 8
         LLARGER .req x19
 
         // Parameter stack offsets:
-        .equ    LLENGTH2,   16
         LLENGTH2 .req x21
-        .equ    LLENGTH1,    24
+  
         LLENGTH1 .req x20
 
         .global BigInt_larger
+        
         
         
 BigInt_larger:
@@ -43,33 +42,39 @@ BigInt_larger:
 		// Prolog
         sub     sp, sp, LARGER_STACK_BYTECOUNT
         str     x30, [sp]
-//        str     x20, [sp, LLENGTH1]
-  //      str     x21, [sp, LLENGTH2]
+        str     x19, [sp, 8]
+        str     x20, [sp, 16]
+        str     x21, [sp, 24]
+
+
+        mov     LLENGTH1, x0
+        mov     LLENGTH2, x1
 
         // long lLarger;
-     
-			  // if (lLength1 < lLength2) goto length1Smaller;
-        cmp     x0, x1
+        // if (lLength1 < lLength2) goto length1Smaller;
+        cmp     LLENGTH1, LLENGTH2
         blt     length1Smaller
         
         // lLarger = lLength1;
-        ldr     x0, [x20]
-        mov     x0, x19
+        mov LLARGER, LLENGTH1
 				
 			  // goto endLarger;
 			  b    endLarger
 			      
 	length1Smaller:
 			  // lLarger = lLength2;
-        str     x21, [x19]
+        mov LLARGER, LLENGTH2
 			  
 			  // goto endLarger;
 			 b endLarger
 			      
 	endLarger:
 	      // Epilog and return lLarger
-        mov     x0, x19
+        mov     x0, LLARGER
         ldr     x30, [sp]
+        ldr     x19, [sp, 8]
+        ldr     x20, [sp, 16]
+        ldr     x21, [sp, 24]
         add     sp, sp, LARGER_STACK_BYTECOUNT
         ret
 
