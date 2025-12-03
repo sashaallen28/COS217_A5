@@ -54,7 +54,7 @@ BigInt_larger:
         
         // lLarger = lLength1;
         ldr     x0, [x20]
-        str     x0, [x19]
+        mov     x0, x19
 				
 			  // goto endLarger;
 			  b    endLarger
@@ -68,7 +68,7 @@ BigInt_larger:
 			      
 	endLarger:
 	      // Epilog and return lLarger
-        ldr     x0, [x19]
+        mov     x0, x19
         ldr     x30, [sp]
         add     sp, sp, LARGER_STACK_BYTECOUNT
         ret
