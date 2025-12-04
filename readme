@@ -68,7 +68,7 @@ guide, enter your name in the space below the following affirmation:
 This paper represents my own work in accordance with University
 regulations.
 
-
+Sasha Allen
 
 ------------------------------------------------------------------------
 Student 2: In fulfillment of the requirement from section 2.4.3 of the
@@ -92,7 +92,7 @@ n/a
 Student 1: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
-
+I did not enjoy this, it felt rather convoluted at times.
 
 ------------------------------------------------------------------------
 Student 2: What is your assessment of the assignment? Was it helpful?
@@ -109,6 +109,40 @@ particular, what bugs are in your submission?
 
 ------------------------------------------------------------------------
 What is your mywc program test plan?
+
+boundary tests
+
+- empty file
+
+*- mywcB01.txt*
+
+- tests how the program handles an input file with no content
+
+- single character + newline
+
+*- mywcB02.txt*
+
+- tests how the program handles a single character with a newline
+
+- word + newline
+
+*- mywcB03.txt*
+
+- tests the standard basic input for the program
+
+- spaces + no newline
+
+*- mywcB04.txt*
+
+- tests how the program handles only the space character
+
+- word + no newline
+
+*- mywcB05.txt*
+
+- tests how the program handles word but no newline
+
+statement tests
 
 
 
